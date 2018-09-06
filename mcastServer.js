@@ -6,7 +6,7 @@ socket.bind(socket.port);
 const sendMessage = async () => {
   console.log('send message');
   // const message = Buffer.from(`Message from process ${process.pid}`);
-  const msg = JSON.stringify({ channel: 0 });
+  const msg = JSON.stringify({ mode: '1' });
   for (let i = 0; i < 5; i++) {
     await asyncSleep(2);
     socket.send(msg, 0, msg.length, socket.port, MULTICAST_ADDR, function() {
