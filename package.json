@@ -1,0 +1,23 @@
+{
+  "name": "rvr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaPulse/rvr.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DaPulse/rvr/issues"
+  },
+  "homepage": "https://github.com/DaPulse/rvr#readme",
+  "dependencies": {
+    "ip": "^1.1.5"
+  }
+}

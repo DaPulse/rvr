@@ -1,3 +1,7 @@
+const ip = require('ip');
+
+const CLIENT_IP = ip.address();
+
 var udp = require('dgram');
 // var buffer = require('buffer');
 
@@ -15,13 +19,20 @@ client.on('message', function(msg, info) {
 });
 
 //sending msg
-client.send(data, 2222, 'localhost', function(error) {
-  if (error) {
-    client.close();
-  } else {
-    console.log('Data sent !!!');
-  }
-});
+// client.send(data, 2222, 'localhost', function(error) {
+//   if (error) {
+//     client.close();
+//   } else {
+//     console.log('Data sent !!!');
+//   }
+// });
+
+const pingToServer = () => {
+  const msg = { type: 'ping', ip: CLIENT_IP };
+  client.send(JSON.stringify(msg), 2222, 'localhost');
+};
+
+setInterval(pingToServer, 2000);
 
 // var data1 = Buffer.from('hello');
 // var data2 = Buffer.from('world');
