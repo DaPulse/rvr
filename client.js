@@ -15,7 +15,12 @@ var data = Buffer.from('siddheshrane');
 
 client.on('message', function(msg, info) {
   console.log('Data received from server : ' + msg.toString());
-  console.log('Received %d bytes from %s:%d\n', msg.length, info.address, info.port);
+  console.log(
+    'Received %d bytes from %s:%d\n',
+    msg.length,
+    info.address,
+    info.port
+  );
 });
 
 //sending msg
@@ -27,9 +32,12 @@ client.on('message', function(msg, info) {
 //   }
 // });
 
+client.bind(2222);
+
 const pingToServer = () => {
+  console.log('ping to server');
   const msg = { type: 'ping', ip: CLIENT_IP };
-  client.send(JSON.stringify(msg), 2222, 'localhost');
+  client.send(JSON.stringify(msg), 2222, '192.168.43.86');
 };
 
 setInterval(pingToServer, 2000);
