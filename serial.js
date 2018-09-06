@@ -34,10 +34,9 @@ const initSerialListener = callback => {
           let data = JSON.parse(msg.slice(0, -2));
           msg = '';
 
-          if (data.channel) {
+          if (data.mode) {
             callback(data);
-            currentChannel = parseInt(data.channel);
-            console.log('current channel', currentChannel);
+            console.log(data);
           }
         }
       } catch (err) {

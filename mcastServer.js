@@ -7,8 +7,8 @@ socket.bind(socket.port);
 let currentMode = 1;
 initSerialListener(data => {
   console.log(data);
-  if (data.channel) {
-    currentMode = parseInt(data.channel);
+  if (data.mode) {
+    currentMode = parseInt(data.mode);
   }
 });
 
