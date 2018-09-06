@@ -2,13 +2,14 @@ const { socket } = require('./mcast');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const _ = require('underscore');
+let runningProc = null;
 
 // Put the module's role as an environment variable
 const MODULE_TYPE = process.env.RVR_MODULE || 'audio_front';
 
 const MODES = {
-	"1": "rain",
-	"2": "jungle"
+  '1': 'rain',
+  '2': 'jungle'
 };
 
 let currentState = {};
@@ -30,9 +31,12 @@ socket.on('message', function(message, rinfo) {
 
 const startState = async state => {
   console.log('startState');
+  if (runningProc) {
+    runningProc.kill('SIGKILL');
+  }
   switch (MODULE_TYPE) {
     case 'audio_front':
-      await playSound(MODE_SOUND_FRONT_MAP[state.mode] + "/front.mp3");
+      await playSound(MODES[state.mode] + '/front.mp3');
       break;
   }
   currentState = {};
@@ -40,7 +44,8 @@ const startState = async state => {
 
 const playSound = async file => {
   console.log('playSound', file);
-  await exec(`omxplayer -o local /home/pi/rvr/modes/${file}`);
+  runningProc = await exec(`omxplayer -o local /home/pi/rvr/modes/${file}`);
+  runningProc.on('exit', () => (runningProc = null));
 };
 
 socket.bind(socket.port);
