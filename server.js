@@ -1,3 +1,9 @@
+const ip = require('ip');
+
+const SERVER_IP = ip.address();
+
+console.log('server ip address, ', SERVER_IP);
+
 let clients = {};
 
 // creating a udp server
@@ -52,7 +58,7 @@ server.on('close', function() {
   console.log('Socket is closed !');
 });
 
-server.bind(2222);
+server.bind('2222');
 
 const changeChannel = () => {
   console.log('send change channel message');
@@ -73,7 +79,7 @@ const changeChannel = () => {
   });
 };
 
-setInterval(changeChannel, 3000);
+setInterval(changeChannel, 1000);
 
 // setTimeout(function() {
 //   server.close();
