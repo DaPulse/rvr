@@ -19,6 +19,7 @@
   "homepage": "https://github.com/DaPulse/rvr#readme",
   "dependencies": {
     "ip": "^1.1.5",
-    "underscore": "^1.9.1"
+    "underscore": "^1.9.1",
+    "serialport": "^7.0.2"
   }
 }
