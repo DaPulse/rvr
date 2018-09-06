@@ -6,14 +6,9 @@ const _ = require('underscore');
 // Put the module's role as an environment variable
 const MODULE_TYPE = process.env.RVR_MODULE || 'audio_front';
 
-const MODE_SOUND_FRONT_MAP = {
-  '1': 'jungle.mp3',
-  '2': 'rain.mp3'
-};
-
-const MODE_SOUND_BACK_MAP = {
-  '1': 'jungle.mp3',
-  '2': 'rain.mp3'
+const MODES = {
+	"1": "rain",
+	"2": "jungle"
 };
 
 let currentState = {};
@@ -37,14 +32,15 @@ const startState = async state => {
   console.log('startState');
   switch (MODULE_TYPE) {
     case 'audio_front':
-      await playSound(MODE_SOUND_FRONT_MAP[state.mode]);
+      await playSound(MODE_SOUND_FRONT_MAP[state.mode] + "/front.mp3");
       break;
   }
+  currentState = {};
 };
 
 const playSound = async file => {
   console.log('playSound', file);
-  await exec(`omxplayer -o local /home/rvr/audio/${file}`);
+  await exec(`omxplayer -o local /home/pi/rvr/modes/${file}`);
 };
 
 socket.bind(socket.port);
