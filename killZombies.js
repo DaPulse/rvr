@@ -9,6 +9,8 @@ let isRunning = false;
 // we will kill all the oldest processes
 // and will keep only the newset time with the minimum uptime
 
+let times = {};
+
 const killZombieProcesses = async () => {
   if (isRunning) return;
   isRunning = true;
@@ -16,18 +18,25 @@ const killZombieProcesses = async () => {
   let youngestProcessTime = null;
   try {
     find('name', PROCESS_NAME).then(async processes => {
-      // console.log('num of processes found', processes.length);
+      console.log('num of processes found', processes.length);
+      await asyncSleep(100);
       if (processes.length < 2) return (isRunning = false);
       for (var i = 0; i < processes.length; i++) {
         // console.log('---------');
         let process = processes[i];
         const pid = process.pid;
         // console.log('process id', pid);
-        let output = await exec(
-          `ps -eo pid,etime,command | grep ${pid} | grep -v grep | awk '{print $2}' | awk -F : '{ printf("%.2f", $1*60+$2+($3/60)); }'`
-        );
-        let time = output.stdout;
-        time = parseInt(time);
+        let time;
+        try {
+          let output = await exec(
+            `ps -eo pid,etime,command | grep ${pid} | grep -v grep | awk '{print $2}' | awk -F : '{ printf("%.2f", $1*60+$2+($3/60)); }'`
+          );
+          time = parseInt(output.stdout);
+        } catch (err) {
+          console.log('ERROR, cant get time', err);
+          time = 999999999999999999;
+        }
+        times[pid] = time;
         // console.log('uptime:', time);
 
         if (!youngestProcessId) {
@@ -44,9 +53,13 @@ const killZombieProcesses = async () => {
       for (var i = 0; i < processes.length; i++) {
         let process = processes[i];
         const pid = process.pid;
-        if (pid != youngestProcessId) {
+        if (pid != youngestProcessId && times[pid] >= 2) {
           console.log('killing process id:', pid);
-          await exec(`kill -9 ${pid} || 'no process to kill'`);
+          try {
+            await exec(`kill -9 ${pid} || 'no process to kill'`);
+          } catch (err) {
+            console.log('ERROR', err);
+          }
         }
       }
 
@@ -60,6 +73,6 @@ const killZombieProcesses = async () => {
 };
 
 console.log('initialized killing zombies processes script');
-setInterval(killZombieProcesses, 2);
+setInterval(killZombieProcesses, 100);
 
 module.exports = {};
