@@ -25,7 +25,12 @@ let players = {};
 
 let currentState = {};
 
+let lastFartTime = new Date().getTime();
+
 const fart = () => {
+  const timeNow = new Date().getTime();
+  if (timeNow - lastFartTime < 200) return;
+  lastFartTime = timeNow;
   console.log('Farting');
   const randomFart = Math.ceil(Math.random() * 8);
   let filePath = `/home/pi/rvr/farts/fart-0${randomFart}.mp3`;
