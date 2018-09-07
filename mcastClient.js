@@ -46,7 +46,8 @@ const startState = async state => {
   // }
   console.log('kill old players');
   Object.keys(players).forEach(function(modeId) {
-    if (players[modeId].running) {
+    const player = players[modeId];
+    if (player && player.running) {
       console.log('player modeId ' + modeId + ' was running, quit player');
       player.quit();
     }
@@ -55,8 +56,7 @@ const startState = async state => {
   console.log('start new player');
   switch (MODULE_TYPE) {
     case 'audio_front':
-      var player = Omx('/home/pi/rvr/modes/' + MODES[state.mode] + '/front.mp3');
-      players[state.mode] = player;
+      players[state.mode] = Omx('/home/pi/rvr/modes/' + MODES[state.mode] + '/front.mp3');
       // await playSound(MODES[state.mode] + '/front.mp3');
       break;
   }
