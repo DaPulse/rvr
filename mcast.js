@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const ip = require('ip');
 const SERVER_IP = ip.address();
 console.log('Device ip address: ', SERVER_IP);
@@ -31,7 +33,7 @@ const syncS3 = async () => {
   }
   try {
     let output = await exec(`cd modes && aws s3 sync s3://monday-rvr ./ --delete`);
-    console.log(output);
+    // console.log(output);
   } catch (err) {
     console.log(err);
   }
@@ -39,9 +41,15 @@ const syncS3 = async () => {
 
 let modeDirs = [];
 
-sync = async () => {
-  console.log('sync files from s3');
-  await syncS3();
+let lastSyncTime;
+try {
+  lastSyncTime = parseInt(fs.readFileSync('./last_sync_time'));
+} catch (err) {
+  // console.log(err);
+  lastSyncTime = 0;
+}
+
+const readModeFolders = () => {
   console.log('get s3 dir names into modes');
   const { readdirSync, statSync } = require('fs');
   const { join } = require('path');
@@ -57,7 +65,21 @@ sync = async () => {
     };
   });
 };
+
+sync = async () => {
+  const timeNow = Math.floor(new Date().getTime() / 1000);
+  console.log('delta from last s3 sync in seconds', timeNow - lastSyncTime);
+  if (timeNow - lastSyncTime < 60 * 60) {
+    return console.log('dont need to sync');
+  }
+  console.log('sync files from s3');
+  await syncS3();
+  fs.writeFileSync('./last_sync_time', timeNow);
+  readModeFolders();
+};
+
 sync();
+readModeFolders();
 
 module.exports = {
   socket,

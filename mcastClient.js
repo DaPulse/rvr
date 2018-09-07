@@ -28,7 +28,7 @@ socket.on('message', function(message, rinfo) {
     // console.log('received a message:');
     // console.log(msgJson);
 
-    if (!_.isEqual(currentState, msgJson)) {
+    if (!_.isEqual(currentState, msgJson) && modeDirs.length > 0) {
       console.log('---');
       console.log(currentState);
       console.log(msgJson);
