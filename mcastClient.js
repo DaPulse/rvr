@@ -62,13 +62,13 @@ const startState = async state => {
 
   // console.log('start new player');
   let filePath;
-  switch (MODULE_TYPE) {
-    case 'audio_front':
-      filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
-      console.log('file path', filePath);
-      players[state.mode] = Omx(filePath);
-      // await playSound(MODES[state.mode] + '/front.mp3');
-      break;
+  // switch (MODULE_TYPE) {
+  //   case 'audio_front':
+  filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
+  console.log('file path', filePath);
+  players[state.mode] = Omx(filePath);
+  // // await playSound(MODES[state.mode] + '/front.mp3');
+  // break;
   }
 };
 
