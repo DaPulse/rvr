@@ -69,6 +69,7 @@ const startState = async state => {
   //   case 'audio_front':
 
   if (state.mode == 999) {
+    console.log('Farting');
     const randomFart = Math.ceil(Math.random() * 8);
     filePath = `/home/pi/rvr/farts/fart-0${randomFart}.mp3`;
   } else {
