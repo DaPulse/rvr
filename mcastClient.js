@@ -1,15 +1,17 @@
 const { asyncSleep } = require('./utils');
-const { socket } = require('./mcast');
+const { socket, modeDirs } = require('./mcast');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const _ = require('underscore');
 let runningProc = null;
 var Omx = require('node-omxplayer');
 const { killZombieProcesses } = require('./killZombies');
-require('./killZombies');
+// require('./killZombies');
 
 // Put the module's role as an environment variable
-const MODULE_TYPE = process.env.RVR_MODULE || 'audio_front';
+const MODULE_TYPE = process.env.RVR_MODULE || 'video-front';
+const IS_VIDEO = MODULE_TYPE.includes('video') ? true : false;
+const FILE_EXTENSION = IS_VIDEO ? 'mp4' : 'mp3';
 
 const MODES = {
   '1': 'rain',
@@ -32,7 +34,7 @@ socket.on('message', function(message, rinfo) {
       console.log(msgJson);
       console.log('state change!, new state', currentState.mode);
       currentState = msgJson;
-      startState(currentState);
+      // startState(currentState);
     }
   } catch (err) {
     // not json message
@@ -59,9 +61,12 @@ const startState = async state => {
   });
 
   // console.log('start new player');
+  let filePath;
   switch (MODULE_TYPE) {
     case 'audio_front':
-      players[state.mode] = Omx('/home/pi/rvr/modes/' + MODES[state.mode] + '/front.mp3');
+      filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
+      console.log('file path', filePath);
+      players[state.mode] = Omx(filePath);
       // await playSound(MODES[state.mode] + '/front.mp3');
       break;
   }

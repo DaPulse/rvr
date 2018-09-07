@@ -37,11 +37,32 @@ const syncS3 = async () => {
   }
 };
 
-syncS3();
+let modeDirs = [];
+
+sync = async () => {
+  console.log('sync files from s3');
+  await syncS3();
+  console.log('get s3 dir names into modes');
+  const { readdirSync, statSync } = require('fs');
+  const { join } = require('path');
+  const getDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
+  const dirs = getDirs('./modes/');
+  dirs.forEach(dir => {
+    const dirNum = parseInt(dir.split('--')[0]);
+    const dirName = dir.split('--')[1];
+    modeDirs[dirNum] = {
+      mode: dirNum,
+      path: dir,
+      name: dirName
+    };
+  });
+};
+sync();
 
 module.exports = {
   socket,
-  MULTICAST_ADDR
+  MULTICAST_ADDR,
+  modeDirs
 };
 
 // const sendMessage = async () => {
