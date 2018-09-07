@@ -31,11 +31,7 @@ socket.on('message', function(message, rinfo) {
     // console.log('received a message:');
     // console.log(msgJson);
 
-    if (
-      !_.isEqual(currentState, msgJson) &&
-      modeDirs.length > 0 &&
-      msgJson.mode != 999
-    ) {
+    if (!_.isEqual(currentState, msgJson) && modeDirs.length > 0) {
       console.log('---');
       console.log(currentState);
       console.log(msgJson);
@@ -76,7 +72,7 @@ const startState = async state => {
     console.log('Farting');
     const randomFart = Math.ceil(Math.random() * 8);
     filePath = `/home/pi/rvr/farts/fart-0${randomFart}.mp3`;
-  } else {
+  } else if (state.mode != 999 && (!players[999] || !players[999].playing)) {
     filePath =
       '/home/pi/rvr/modes/' +
       modeDirs[state.mode].path +
