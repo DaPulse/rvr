@@ -8,17 +8,18 @@ let currentMode = 1;
 initSerialListener(data => {
   console.log(data);
   if (data.mode) {
-    // currentMode = parseInt(data.mode);
+    currentMode = parseInt(data.mode);
   }
 });
 
-setInterval(() => {
-  if (currentMode == 1) {
-    currentMode = 2;
-  } else {
-    currentMode = 1;
-  }
-}, 8000);
+// for test purposes:
+// setInterval(() => {
+//   if (currentMode == 1) {
+//     currentMode = 2;
+//   } else {
+//     currentMode = 1;
+//   }
+// }, 10000);
 
 const sendMessage = async () => {
   console.log('send message');
@@ -32,4 +33,4 @@ const sendMessage = async () => {
   }
 };
 
-setInterval(sendMessage, 2000);
+setInterval(sendMessage, 1000);
