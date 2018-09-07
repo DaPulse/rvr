@@ -3,6 +3,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const _ = require('underscore');
 let runningProc = null;
+require('./killZombies');
 
 // Put the module's role as an environment variable
 const MODULE_TYPE = process.env.RVR_MODULE || 'audio_front';

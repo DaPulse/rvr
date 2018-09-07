@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/DaPulse/rvr#readme",
   "dependencies": {
+    "find-process": "^1.1.3",
     "ip": "^1.1.5",
-    "underscore": "^1.9.1",
-    "serialport": "^7.0.2"
+    "ps-node": "^0.1.6",
+    "serialport": "^7.0.2",
+    "underscore": "^1.9.1"
   }
 }
