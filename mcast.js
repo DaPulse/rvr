@@ -7,6 +7,8 @@ console.log('module name: ', global.MODULE_TYPE);
 
 // const MODULE_TYPE = process.env.RVR_MODULE || 'unkown_module';
 
+require('./s3');
+
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
@@ -22,11 +24,7 @@ socket.on('listening', function() {
   socket.addMembership(MULTICAST_ADDR);
   // setInterval(sendMessage, 1000);
   const address = socket.address();
-  console.log(
-    `UDP socket listening on ${address.address}:${address.port} pid: ${
-      process.pid
-    }`
-  );
+  console.log(`UDP socket listening on ${address.address}:${address.port} pid: ${process.pid}`);
 });
 
 socket.port = PORT;
@@ -68,8 +66,7 @@ const readModeFolders = () => {
   console.log('get s3 dir names into modes');
   const { readdirSync, statSync } = require('fs');
   const { join } = require('path');
-  const getDirs = p =>
-    readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
+  const getDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
   const dirs = getDirs('./modes/');
   dirs.forEach(dir => {
     const dirNum = parseInt(dir.split('--')[0]);
