@@ -57,8 +57,10 @@ const playSound = async file => {
     console.log('error starting player');
     console.log(err);
   }
-  // runningProc.on('exit', () => (runningProc = null));
-  await asyncSleep(1000);
+  runningProc.on('exit', () => (runningProc = null));
+  await asyncSleep(10);
+  killZombieProcesses();
+  await asyncSleep(10);
   killZombieProcesses();
 };
 
