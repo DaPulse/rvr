@@ -29,6 +29,7 @@ socket.on('message', function(message, rinfo) {
     if (!_.isEqual(currentState, msgJson)) {
       console.log('---');
       console.log(currentState);
+      console.log(msgJson);
       console.log('state change!, new state', currentState.mode);
       currentState = msgJson;
       startState(currentState);
@@ -64,7 +65,6 @@ const startState = async state => {
       // await playSound(MODES[state.mode] + '/front.mp3');
       break;
   }
-  currentState = {};
 };
 
 // const playSound = async file => {
