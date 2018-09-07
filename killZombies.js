@@ -3,7 +3,7 @@ const find = require('find-process');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-const PROCESS_NAME = '/usr/bin/omxplayer';
+const PROCESS_NAME = '/bin/bash /usr/bin/omxplayer';
 let isRunning = false;
 // if more than one process with the name is running
 // we will kill all the oldest processes
@@ -22,8 +22,10 @@ const killZombieProcesses = async () => {
       await asyncSleep(100);
       if (processes.length < 2) return (isRunning = false);
       for (var i = 0; i < processes.length; i++) {
-        // console.log('---------');
+        console.log('---------');
         let process = processes[i];
+        console.log(process);
+
         const pid = process.pid;
         // console.log('process id', pid);
         let time;
@@ -58,7 +60,7 @@ const killZombieProcesses = async () => {
           try {
             await exec(`kill -9 ${pid} || 'no process to kill'`);
           } catch (err) {
-            console.log('ERROR', err);
+            // console.log('ERROR', err);
           }
         }
       }
@@ -67,7 +69,7 @@ const killZombieProcesses = async () => {
       // await asyncSleep(1000);
     });
   } catch (err) {
-    console.log('error', err);
+    // console.log('error', err);
     isRunning = false;
   }
 };

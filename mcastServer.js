@@ -8,9 +8,17 @@ let currentMode = 1;
 initSerialListener(data => {
   console.log(data);
   if (data.mode) {
-    currentMode = parseInt(data.mode);
+    // currentMode = parseInt(data.mode);
   }
 });
+
+setInterval(() => {
+  if (currentMode == 1) {
+    currentMode = 2;
+  } else {
+    currentMode = 1;
+  }
+}, 4000);
 
 const sendMessage = async () => {
   console.log('send message');
