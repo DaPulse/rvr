@@ -34,7 +34,7 @@ socket.on('message', function(message, rinfo) {
       console.log(msgJson);
       console.log('state change!, new state', currentState.mode);
       currentState = msgJson;
-      // startState(currentState);
+      startState(currentState);
     }
   } catch (err) {
     // not json message
