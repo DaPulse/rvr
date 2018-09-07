@@ -16,13 +16,13 @@ initSerialListener(data => {
 });
 
 // for test purposes:
-setInterval(() => {
-  if (currentMode == 1) {
-    currentMode = 2;
-  } else {
-    currentMode = 1;
-  }
-}, 30000);
+// setInterval(() => {
+//   if (currentMode == 1) {
+//     currentMode = 2;
+//   } else {
+//     currentMode = 1;
+//   }
+// }, 30000);
 
 const sendMessage = async () => {
   console.log('send message');
