@@ -34,13 +34,13 @@ socket.on('message', function(message, rinfo) {
 
 const startState = async state => {
   console.log('startState');
-  if (runningProc) {
-    try {
-      runningProc.kill('SIGKILL');
-    } catch (err) {
-      console.log('cant kill ', err);
-    }
-  }
+  // if (runningProc) {
+  //   try {
+  //     // runningProc.kill('SIGKILL');
+  //   } catch (err) {
+  //     console.log('cant kill ', err);
+  //   }
+  // }
   switch (MODULE_TYPE) {
     case 'audio_front':
       await playSound(MODES[state.mode] + '/front.mp3');
@@ -52,15 +52,16 @@ const startState = async state => {
 const playSound = async file => {
   console.log('playSound', file);
   try {
-    runningProc = await exec(`omxplayer -o local /home/pi/rvr/modes/${file}`);
+    // runningProc = await exec(`omxplayer -o local /home/pi/rvr/modes/${file}`);
+    await exec(`omxplayer -o local /home/pi/rvr/modes/${file}`);
   } catch (err) {
     console.log('error starting player');
     console.log(err);
   }
-  runningProc.on('exit', () => (runningProc = null));
-  await asyncSleep(10);
+  // runningProc.on('exit', () => (runningProc = null));
+  await asyncSleep(100);
   killZombieProcesses();
-  await asyncSleep(10);
+  await asyncSleep(200);
   killZombieProcesses();
 };
 

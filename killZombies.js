@@ -18,7 +18,7 @@ const killZombieProcesses = async () => {
   let youngestProcessTime = null;
   try {
     find('name', PROCESS_NAME).then(async processes => {
-      console.log('num of processes found', processes.length);
+      console.log('num of processes found:', processes.length);
       await asyncSleep(100);
       if (processes.length < 2) return (isRunning = false);
       for (var i = 0; i < processes.length; i++) {
