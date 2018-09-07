@@ -51,6 +51,7 @@ const playSound = async file => {
     runningProc = await exec(`omxplayer -o local /home/pi/rvr/modes/${file}`);
   } catch (err) {
     console.log('error starting player');
+    console.log(err);
   }
   // runningProc.on('exit', () => (runningProc = null));
   await asyncSleep(1000);
