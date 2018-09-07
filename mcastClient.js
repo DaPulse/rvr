@@ -23,10 +23,11 @@ let currentState = {};
 socket.on('message', function(message, rinfo) {
   try {
     const msgJson = JSON.parse(message);
-    console.log('received a message:');
-    console.log(msgJson);
+    // console.log('received a message:');
+    // console.log(msgJson);
 
     if (!_.isEqual(currentState, msgJson)) {
+      console.log('---');
       console.log(currentState);
       console.log('state change!, new state', currentState.mode);
       currentState = msgJson;
@@ -38,7 +39,7 @@ socket.on('message', function(message, rinfo) {
 });
 
 const startState = async state => {
-  console.log(state);
+  // console.log(state);
   console.log('startState');
   // if (runningProc) {
   //   try {
@@ -47,16 +48,16 @@ const startState = async state => {
   //     console.log('cant kill ', err);
   //   }
   // }
-  console.log('kill old players');
+  // console.log('kill old players');
   Object.keys(players).forEach(function(modeId) {
     const player = players[modeId];
     if (player && player.running) {
-      console.log('player modeId ' + modeId + ' was running, quit player');
+      // console.log('player modeId ' + modeId + ' was running, quit player');
       player.quit();
     }
   });
 
-  console.log('start new player');
+  // console.log('start new player');
   switch (MODULE_TYPE) {
     case 'audio_front':
       players[state.mode] = Omx('/home/pi/rvr/modes/' + MODES[state.mode] + '/front.mp3');
