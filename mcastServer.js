@@ -20,7 +20,7 @@ initSerialListener(data => {
   }
 
   if (data.action && data.action == 'fart') {
-    sendSerialMessage(JSON.stringify({ mode: 999 }));
+    sendMessage(JSON.stringify({ mode: 999 }));
   }
 });
 
