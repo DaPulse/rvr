@@ -29,7 +29,7 @@ let lastFartTime = new Date().getTime();
 
 const fart = () => {
   const timeNow = new Date().getTime();
-  if (timeNow - lastFartTime < 200) return;
+  if (timeNow - lastFartTime < 500) return;
   lastFartTime = timeNow;
   console.log('Farting');
   const randomFart = Math.ceil(Math.random() * 8);
