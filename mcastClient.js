@@ -69,7 +69,7 @@ const startState = async state => {
   players[state.mode] = Omx(filePath);
   // // await playSound(MODES[state.mode] + '/front.mp3');
   // break;
-  }
+  // }
 };
 
 // const playSound = async file => {
