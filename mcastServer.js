@@ -24,10 +24,16 @@ initSerialListener(data => {
   }
 });
 
-const sendMessage = async () => {
+const sendMessage = async message => {
   console.log('send message');
   // const message = Buffer.from(`Message from process ${process.pid}`);
-  const msg = JSON.stringify({ mode: currentMode });
+  let msg;
+  if (message) {
+    msg = message;
+  } else {
+    msg = JSON.stringify({ mode: currentMode });
+  }
+
   for (let i = 0; i < 1; i++) {
     await asyncSleep(10);
     socket.send(msg, 0, msg.length, socket.port, MULTICAST_ADDR, function() {
