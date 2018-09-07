@@ -74,7 +74,6 @@ const killZombieProcesses = async () => {
   }
 };
 
-console.log('initialized killing zombies processes script');
-setInterval(killZombieProcesses, 100);
-
-module.exports = {};
+module.exports = {
+  killZombieProcesses
+};

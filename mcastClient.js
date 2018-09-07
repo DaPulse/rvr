@@ -1,8 +1,10 @@
+const { asyncSleep } = require('./utils');
 const { socket } = require('./mcast');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const _ = require('underscore');
 let runningProc = null;
+const { killZombieProcesses } = require('./killZombies');
 require('./killZombies');
 
 // Put the module's role as an environment variable
@@ -51,6 +53,8 @@ const playSound = async file => {
     console.log('error starting player');
   }
   // runningProc.on('exit', () => (runningProc = null));
+  await asyncSleep(1000);
+  killZombieProcesses();
 };
 
 socket.bind(socket.port);
