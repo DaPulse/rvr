@@ -1,6 +1,14 @@
 const { exec } = require('child_process');
 var SerialPort = require('serialport');
 
+let serial = null;
+
+const sendSerialMessage = message => {
+  console.log('Sending message on serial: ', message);
+  serial.write(message);
+  serial.flush();
+};
+
 const initSerialListener = callback => {
   const piArduinoDevicePrefix = 'ttyACM';
   // usbmodem is for mac
@@ -24,7 +32,13 @@ const initSerialListener = callback => {
       baudRate: 9600
     });
 
+    console.log('Set serial to ', serial);
+
     let msg = '';
+
+    serialPort.on('open', () => {
+      serial = serialPort;
+    });
 
     // Switches the port into "flowing mode"
     serialPort.on('data', function(data) {
@@ -34,12 +48,10 @@ const initSerialListener = callback => {
           let data = JSON.parse(msg.slice(0, -2));
           msg = '';
 
-          if (data.mode) {
-            callback(data);
-            console.log(data);
-          }
+          callback(data);
         }
       } catch (err) {
+        console.log(data.toString('utf8'));
         console.log(err);
       }
     });
@@ -54,5 +66,6 @@ const initSerialListener = callback => {
 };
 
 module.exports = {
-  initSerialListener
+  initSerialListener,
+  sendSerialMessage
 };

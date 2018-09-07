@@ -1,14 +1,22 @@
 const { asyncSleep } = require('./utils');
 const { socket, MULTICAST_ADDR } = require('./mcast');
-const { initSerialListener } = require('./serial');
+const { sendSerialMessage, initSerialListener } = require('./serial');
 
 socket.bind(socket.port);
 
 let currentMode = 1;
 initSerialListener(data => {
-  console.log(data);
+  console.log('Received message: ', data);
   if (data.mode) {
     currentMode = parseInt(data.mode);
+  }
+
+  if (data.action && data.action == 'get_modes') {
+    setTimeout(
+      () => sendSerialMessage('1;Jungle;Desert Storm;Rick & Morty;\n'),
+      1000
+    );
+    console.log('Getting modes');
   }
 });
 
