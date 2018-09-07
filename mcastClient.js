@@ -27,6 +27,7 @@ socket.on('message', function(message, rinfo) {
     console.log(msgJson);
 
     if (!_.isEqual(currentState, msgJson)) {
+      console.log(currentState);
       console.log('state change!, new state', currentState.mode);
       currentState = msgJson;
       startState(currentState);
@@ -37,6 +38,7 @@ socket.on('message', function(message, rinfo) {
 });
 
 const startState = async state => {
+  console.log(state);
   console.log('startState');
   // if (runningProc) {
   //   try {
