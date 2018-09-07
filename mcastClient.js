@@ -25,11 +25,23 @@ let players = {};
 
 let currentState = {};
 
+const fart = () => {
+  console.log('Farting');
+  const randomFart = Math.ceil(Math.random() * 8);
+  let filePath = `/home/pi/rvr/farts/fart-0${randomFart}.mp3`;
+  console.log('file path', filePath);
+  Omx(filePath);
+};
+
 socket.on('message', function(message, rinfo) {
   try {
     const msgJson = JSON.parse(message);
     // console.log('received a message:');
     // console.log(msgJson);
+
+    if (msgJson.fart) {
+      fart();
+    }
 
     if (!_.isEqual(currentState, msgJson) && modeDirs.length > 0) {
       console.log('---');
@@ -73,11 +85,7 @@ const startState = async state => {
     const randomFart = Math.ceil(Math.random() * 8);
     filePath = `/home/pi/rvr/farts/fart-0${randomFart}.mp3`;
   } else if (state.mode != 999 && (!players[999] || !players[999].playing)) {
-    filePath =
-      '/home/pi/rvr/modes/' +
-      modeDirs[state.mode].path +
-      '/' +
-      `${MODULE_TYPE}.${FILE_EXTENSION}`;
+    filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
   }
   console.log('file path', filePath);
   players[state.mode] = Omx(filePath);

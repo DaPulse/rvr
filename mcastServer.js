@@ -7,11 +7,16 @@ const { sendSerialMessage, initSerialListener } = require('./serial');
 
 socket.bind(socket.port);
 
+let lastSentTime = new Date().getTime();
+
 let currentMode = 1;
 initSerialListener(data => {
   console.log('Received message: ', data);
   if (data.action && data.action == 'play') {
-    currentMode = parseInt(data.channel);
+    if (parseInt(data.channel) != currentMode) {
+      currentMode = parseInt(data.channel);
+      sendMessage();
+    }
   }
 
   if (data.action && data.action == 'get_modes') {
@@ -20,11 +25,14 @@ initSerialListener(data => {
   }
 
   if (data.action && data.action == 'fart') {
-    sendMessage(JSON.stringify({ mode: 999 }));
+    sendMessage(JSON.stringify({ fart: true }));
   }
 });
 
 const sendMessage = async message => {
+  if (new Date().getTime - lastSentTime < 100) return;
+  lastSentTime = new Date().getTime();
+
   console.log('send message');
   // const message = Buffer.from(`Message from process ${process.pid}`);
   let msg;
