@@ -67,7 +67,17 @@ const startState = async state => {
   let filePath;
   // switch (MODULE_TYPE) {
   //   case 'audio_front':
-  filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
+
+  if (state.mode == 999) {
+    const randomFart = Math.ceil(Math.random() * 8);
+    filePath = `/home/pi/rvr/farts/fart-0${randomFart}.mp3`;
+  } else {
+    filePath =
+      '/home/pi/rvr/modes/' +
+      modeDirs[state.mode].path +
+      '/' +
+      `${MODULE_TYPE}.${FILE_EXTENSION}`;
+  }
   console.log('file path', filePath);
   players[state.mode] = Omx(filePath);
   // // await playSound(MODES[state.mode] + '/front.mp3');
