@@ -22,9 +22,8 @@ const killZombieProcesses = async () => {
       await asyncSleep(100);
       if (processes.length < 2) return (isRunning = false);
       for (var i = 0; i < processes.length; i++) {
-        console.log('---------');
         let process = processes[i];
-        console.log(process);
+        console.log(process.cmd);
 
         const pid = process.pid;
         // console.log('process id', pid);

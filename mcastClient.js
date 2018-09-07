@@ -34,9 +34,13 @@ socket.on('message', function(message, rinfo) {
 
 const startState = async state => {
   console.log('startState');
-  // if (runningProc) {
-  //   runningProc.kill('SIGKILL');
-  // }
+  if (runningProc) {
+    try {
+      runningProc.kill('SIGKILL');
+    } catch (err) {
+      console.log('cant kill ', err);
+    }
+  }
   switch (MODULE_TYPE) {
     case 'audio_front':
       await playSound(MODES[state.mode] + '/front.mp3');
