@@ -1,3 +1,7 @@
+const ip = require('ip');
+const SERVER_IP = ip.address();
+console.log('Device ip address: ', SERVER_IP);
+
 const PORT = 20000;
 const MULTICAST_ADDR = '233.255.255.255';
 
