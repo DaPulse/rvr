@@ -1,5 +1,7 @@
+const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
+global.MODULE_TYPE = MODULE_TYPE;
+
 const { asyncSleep } = require('./utils');
-const { socket, modeDirs } = require('./mcast');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const _ = require('underscore');
@@ -8,8 +10,9 @@ var Omx = require('node-omxplayer');
 const { killZombieProcesses } = require('./killZombies');
 // require('./killZombies');
 
+const { socket, modeDirs } = require('./mcast');
+
 // Put the module's role as an environment variable
-const MODULE_TYPE = process.env.RVR_MODULE || 'video-front';
 const IS_VIDEO = MODULE_TYPE.includes('video') ? true : false;
 const FILE_EXTENSION = IS_VIDEO ? 'mp4' : 'mp3';
 

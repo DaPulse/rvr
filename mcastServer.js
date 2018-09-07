@@ -1,3 +1,6 @@
+const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
+global.MODULE_TYPE = MODULE_TYPE;
+
 const { asyncSleep } = require('./utils');
 const { socket, MULTICAST_ADDR } = require('./mcast');
 const { initSerialListener } = require('./serial');

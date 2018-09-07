@@ -1,9 +1,11 @@
 const fs = require('fs');
-const MODULE_TYPE = process.env.RVR_MODULE || 'unkown_module';
-
 const ip = require('ip');
 const SERVER_IP = ip.address();
 console.log('Device ip address: ', SERVER_IP);
+
+console.log(global.MODULE_TYPE);
+
+// const MODULE_TYPE = process.env.RVR_MODULE || 'unkown_module';
 
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
@@ -34,7 +36,7 @@ const syncS3 = async () => {
   }
   try {
     let output = await exec(
-      `cd modes && aws s3 sync s3://monday-rvr ./ --exclude "*" --include "*${MODULE_TYPE}*" --delete`
+      `cd modes && aws s3 sync s3://monday-rvr ./ --exclude "*" --include "*${global.MODULE_TYPE}*" --delete`
     );
     // console.log(output);
   } catch (err) {
