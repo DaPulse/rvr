@@ -46,7 +46,7 @@ const killZombieProcesses = async () => {
         const pid = process.pid;
         if (pid != youngestProcessId) {
           console.log('killing process id:', pid);
-          await exec('kill -9 ' + pid);
+          await exec(`kill -9 ${pid} || 'no process to kill'`);
         }
       }
 
