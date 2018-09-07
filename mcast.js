@@ -1,4 +1,5 @@
 const fs = require('fs');
+const MODULE_TYPE = process.env.RVR_MODULE || 'unkown_module';
 
 const ip = require('ip');
 const SERVER_IP = ip.address();
@@ -32,7 +33,9 @@ const syncS3 = async () => {
     // folder already exist
   }
   try {
-    let output = await exec(`cd modes && aws s3 sync s3://monday-rvr ./ --delete`);
+    let output = await exec(
+      `cd modes && aws s3 sync s3://monday-rvr ./ --exclude "*" --include "*${MODULE_TYPE}*" --delete`
+    );
     // console.log(output);
   } catch (err) {
     console.log(err);
@@ -64,6 +67,8 @@ const readModeFolders = () => {
       name: dirName
     };
   });
+  console.log('module dirs:');
+  console.log(dirs);
 };
 
 sync = async () => {
@@ -75,6 +80,7 @@ sync = async () => {
   console.log('sync files from s3');
   await syncS3();
   fs.writeFileSync('./last_sync_time', timeNow);
+  console.log('Finished to sync files from s3');
   readModeFolders();
 };
 
