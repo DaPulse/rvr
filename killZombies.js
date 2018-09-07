@@ -3,7 +3,7 @@ const find = require('find-process');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-const PROCESS_NAME = 'omxpalyer';
+const PROCESS_NAME = '/usr/bin/omxplayer';
 let isRunning = false;
 // if more than one process with the name is running
 // we will kill all the oldest processes
