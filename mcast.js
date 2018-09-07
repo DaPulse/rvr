@@ -22,7 +22,11 @@ socket.on('listening', function() {
   socket.addMembership(MULTICAST_ADDR);
   // setInterval(sendMessage, 1000);
   const address = socket.address();
-  console.log(`UDP socket listening on ${address.address}:${address.port} pid: ${process.pid}`);
+  console.log(
+    `UDP socket listening on ${address.address}:${address.port} pid: ${
+      process.pid
+    }`
+  );
 });
 
 socket.port = PORT;
@@ -48,6 +52,10 @@ const syncS3 = async () => {
 
 let modeDirs = [];
 
+getModeDirsSerialString = () => {
+  return `1;${modeDirs.map(e => e.name).join(';')};\n`;
+};
+
 let lastSyncTime;
 try {
   lastSyncTime = parseInt(fs.readFileSync('./last_sync_time'));
@@ -60,7 +68,8 @@ const readModeFolders = () => {
   console.log('get s3 dir names into modes');
   const { readdirSync, statSync } = require('fs');
   const { join } = require('path');
-  const getDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
+  const getDirs = p =>
+    readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
   const dirs = getDirs('./modes/');
   dirs.forEach(dir => {
     const dirNum = parseInt(dir.split('--')[0]);
@@ -94,7 +103,8 @@ readModeFolders();
 module.exports = {
   socket,
   MULTICAST_ADDR,
-  modeDirs
+  modeDirs,
+  getModeDirsSerialString
 };
 
 // const sendMessage = async () => {

@@ -2,7 +2,7 @@ const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
 global.MODULE_TYPE = MODULE_TYPE;
 
 const { asyncSleep } = require('./utils');
-const { socket, MULTICAST_ADDR } = require('./mcast');
+const { socket, MULTICAST_ADDR, getModeDirsSerialString } = require('./mcast');
 const { sendSerialMessage, initSerialListener } = require('./serial');
 
 socket.bind(socket.port);
@@ -10,27 +10,19 @@ socket.bind(socket.port);
 let currentMode = 1;
 initSerialListener(data => {
   console.log('Received message: ', data);
-  if (data.mode) {
-    currentMode = parseInt(data.mode);
+  if (data.action && data.action == 'play') {
+    currentMode = parseInt(data.channel);
   }
 
   if (data.action && data.action == 'get_modes') {
-    setTimeout(
-      () => sendSerialMessage('1;Jungle;Desert Storm;Rick & Morty;\n'),
-      1000
-    );
+    setTimeout(() => sendSerialMessage(getModeDirsSerialString()), 1000);
     console.log('Getting modes');
   }
-});
 
-// for test purposes:
-// setInterval(() => {
-//   if (currentMode == 1) {
-//     currentMode = 2;
-//   } else {
-//     currentMode = 1;
-//   }
-// }, 30000);
+  if (data.action && data.action == 'fart') {
+    sendSerialMessage(JSON.stringify({ mode: 999 }));
+  }
+});
 
 const sendMessage = async () => {
   console.log('send message');
