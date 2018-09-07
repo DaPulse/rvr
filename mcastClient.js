@@ -27,6 +27,7 @@ socket.on('message', function(message, rinfo) {
     console.log(msgJson);
 
     if (!_.isEqual(currentState, msgJson)) {
+      console.log('state change!, new state', currentState.mode);
       currentState = msgJson;
       startState(currentState);
     }

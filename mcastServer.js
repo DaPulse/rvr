@@ -18,7 +18,7 @@ setInterval(() => {
   } else {
     currentMode = 1;
   }
-}, 4000);
+}, 8000);
 
 const sendMessage = async () => {
   console.log('send message');
