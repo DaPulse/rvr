@@ -3,7 +3,7 @@ const ip = require('ip');
 const SERVER_IP = ip.address();
 console.log('Device ip address: ', SERVER_IP);
 
-console.log(global.MODULE_TYPE);
+console.log('module name: ', global.MODULE_TYPE);
 
 // const MODULE_TYPE = process.env.RVR_MODULE || 'unkown_module';
 
