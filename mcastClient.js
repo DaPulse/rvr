@@ -78,7 +78,8 @@ const startState = async state => {
     }
   });
 
-  const folderPath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/';
+  // const folderPath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/';
+  const folderPath = '/home/pi/rvr/modes/' + currentState.path + '/';
   const filePath = await getFilePath(folderPath);
 
   if (filePath) {

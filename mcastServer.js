@@ -2,7 +2,7 @@ const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
 global.MODULE_TYPE = MODULE_TYPE;
 
 const { asyncSleep } = require('./utils');
-const { socket, MULTICAST_ADDR, getModeDirsSerialString } = require('./mcast');
+const { socket, modeDirs, MULTICAST_ADDR, getModeDirsSerialString } = require('./mcast');
 const { sendSerialMessage, initSerialListener } = require('./serial');
 
 socket.bind(socket.port);
@@ -48,7 +48,8 @@ const sendMessage = async message => {
   if (message) {
     msg = message;
   } else {
-    msg = JSON.stringify({ mode: currentMode });
+    const path = (modeDirs[currentMode] || {}).path;
+    msg = JSON.stringify({ mode: currentMode, path });
   }
 
   for (let i = 0; i < 1; i++) {
