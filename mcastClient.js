@@ -63,10 +63,11 @@ socket.on('message', function(message, rinfo) {
   }
 });
 
-const getVideoFile = folderPath => {
+const getFilePath = folderPath => {
   fs.readdirSync(folderPath).forEach(file => {
-    console.log(file);
+    if (file.split('.') == MODULE_TYPE) return `${folderPath}${file}`;
   });
+  return null;
 };
 
 const startState = async state => {
@@ -88,22 +89,17 @@ const startState = async state => {
     }
   });
 
-  // console.log('start new player');
-  let filePath;
-  // switch (MODULE_TYPE) {
-  //   case 'audio_front':
-
-  // if (state.mode == 999) {
-  //   console.log('Farting');
-  //   const randomFart = Math.ceil(Math.random() * 8);
-  //   filePath = `/home/pi/rvr/farts/fart-0${randomFart}.mp3`;
-  // } else if (state.mode != 999 && (!players[999] || !players[999].playing)) {
   const folderPath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/';
-  getVideoFile(folderPath);
+  const filePath = getFilePath(folderPath);
   // filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
   // }
-  // console.log('file path', filePath);
-  // players[state.mode] = Omx(filePath);
+  if filePath {
+    console.log('file path', filePath);
+    players[state.mode] = Omx(filePath);
+  } else {
+    console.log('file was not found for module')
+  }
+  
   // // await playSound(MODES[state.mode] + '/front.mp3');
   // break;
   // }
