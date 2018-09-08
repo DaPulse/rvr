@@ -66,6 +66,9 @@ socket.on('message', function(message, rinfo) {
 const getFilePath = folderPath => {
   fs.readdirSync(folderPath).forEach(file => {
     try {
+      console.log(file.split('.')[0]);
+      console.log(MODULE_TYPE);
+      console.log(`${folderPath}${file}`);
       if (file.split('.')[0] == MODULE_TYPE) return `${folderPath}${file}`;
     } catch (err) {
       console.log(err);
