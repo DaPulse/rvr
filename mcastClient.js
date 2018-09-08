@@ -10,15 +10,6 @@ var Omx = require('node-omxplayer');
 
 const { socket, modeDirs } = require('./mcast');
 
-// Put the module's role as an environment variable
-const IS_VIDEO = MODULE_TYPE.includes('video') ? true : false;
-const FILE_EXTENSION = IS_VIDEO ? 'mp4' : 'mp3';
-
-const MODES = {
-  '1': 'rain',
-  '2': 'jungle'
-};
-
 let players = {};
 
 let currentState = {};
@@ -78,16 +69,7 @@ const getFilePath = async folderPath => {
 };
 
 const startState = async state => {
-  // console.log(state);
   console.log('startState');
-  // if (runningProc) {
-  //   try {
-  //     // runningProc.kill('SIGKILL');
-  //   } catch (err) {
-  //     console.log('cant kill ', err);
-  //   }
-  // }
-  // console.log('kill old players');
   Object.keys(players).forEach(function(modeId) {
     const player = players[modeId];
     if (player && player.running) {
@@ -98,34 +80,13 @@ const startState = async state => {
 
   const folderPath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/';
   const filePath = await getFilePath(folderPath);
-  // filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
-  // }
+
   if (filePath) {
     console.log('file path', filePath);
     players[state.mode] = Omx(filePath);
   } else {
     console.log('file was not found for module');
   }
-
-  // // await playSound(MODES[state.mode] + '/front.mp3');
-  // break;
-  // }
 };
-
-// const playSound = async file => {
-//   console.log('playSound', file);
-//   try {
-//     // runningProc = await exec(`omxplayer -o local /home/pi/rvr/modes/${file}`);
-//     await exec(`omxplayer -o local /home/pi/rvr/modes/${file}`);
-//   } catch (err) {
-//     console.log('error starting player');
-//     console.log(err);
-//   }
-//   // runningProc.on('exit', () => (runningProc = null));
-//   await asyncSleep(100);
-//   killZombieProcesses();
-//   await asyncSleep(200);
-//   killZombieProcesses();
-// };
 
 socket.bind(socket.port);
