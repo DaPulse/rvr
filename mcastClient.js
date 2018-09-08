@@ -64,7 +64,7 @@ socket.on('message', function(message, rinfo) {
 });
 
 const getFilePath = async folderPath => {
-  const files = await fs.readdir(folderPath);
+  const files = await fs.readdirSync(folderPath);
   console.log(files);
   for (let file of files) {
     try {
