@@ -93,13 +93,13 @@ const startState = async state => {
   const filePath = getFilePath(folderPath);
   // filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
   // }
-  if filePath {
+  if (filePath) {
     console.log('file path', filePath);
     players[state.mode] = Omx(filePath);
   } else {
-    console.log('file was not found for module')
+    console.log('file was not found for module');
   }
-  
+
   // // await playSound(MODES[state.mode] + '/front.mp3');
   // break;
   // }
