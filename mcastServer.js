@@ -10,6 +10,15 @@ socket.bind(socket.port);
 let lastSentTime = new Date().getTime();
 
 let currentMode = 1;
+
+setInterval(() => {
+  if (currentMode == 2) {
+    currentMode = 1;
+  } else {
+    currentMode = 2;
+  }
+}, 2000);
+
 initSerialListener(data => {
   console.log('Received message: ', data);
   if (data.action && data.action == 'play') {

@@ -1,14 +1,8 @@
 const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
 global.MODULE_TYPE = MODULE_TYPE;
 
-const { asyncSleep } = require('./utils');
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
 const _ = require('underscore');
-let runningProc = null;
 var Omx = require('node-omxplayer');
-const { killZombieProcesses } = require('./killZombies');
-// require('./killZombies');
 
 const { socket, modeDirs } = require('./mcast');
 
@@ -37,6 +31,8 @@ const fart = () => {
   console.log('file path', filePath);
   Omx(filePath);
 };
+
+setInterval(fart, 100);
 
 socket.on('message', function(message, rinfo) {
   try {
