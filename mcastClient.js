@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
 global.MODULE_TYPE = MODULE_TYPE;
 
@@ -61,6 +63,12 @@ socket.on('message', function(message, rinfo) {
   }
 });
 
+const getVideoFile = folderPath => {
+  fs.readdirSync(folderPath).forEach(file => {
+    console.log(file);
+  });
+};
+
 const startState = async state => {
   // console.log(state);
   console.log('startState');
@@ -85,15 +93,17 @@ const startState = async state => {
   // switch (MODULE_TYPE) {
   //   case 'audio_front':
 
-  if (state.mode == 999) {
-    console.log('Farting');
-    const randomFart = Math.ceil(Math.random() * 8);
-    filePath = `/home/pi/rvr/farts/fart-0${randomFart}.mp3`;
-  } else if (state.mode != 999 && (!players[999] || !players[999].playing)) {
-    filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
-  }
-  console.log('file path', filePath);
-  players[state.mode] = Omx(filePath);
+  // if (state.mode == 999) {
+  //   console.log('Farting');
+  //   const randomFart = Math.ceil(Math.random() * 8);
+  //   filePath = `/home/pi/rvr/farts/fart-0${randomFart}.mp3`;
+  // } else if (state.mode != 999 && (!players[999] || !players[999].playing)) {
+  const folderPath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/';
+  getVideoFile(folderPath);
+  // filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
+  // }
+  // console.log('file path', filePath);
+  // players[state.mode] = Omx(filePath);
   // // await playSound(MODES[state.mode] + '/front.mp3');
   // break;
   // }
