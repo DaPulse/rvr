@@ -38,8 +38,6 @@ const fart = async (n = 2) => {
   fart(n - 1);
 };
 
-setInterval(fart, 10000);
-
 socket.on('message', function(message, rinfo) {
   try {
     const msgJson = JSON.parse(message);
