@@ -1,6 +1,8 @@
 const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
 global.MODULE_TYPE = MODULE_TYPE;
 
+const { asyncSleep } = require('./utils');
+
 const _ = require('underscore');
 var Omx = require('node-omxplayer');
 
@@ -21,7 +23,8 @@ let currentState = {};
 
 let lastFartTime = new Date().getTime();
 
-const fart = () => {
+const fart = async (n = 2) => {
+  if (n == 0) return;
   const timeNow = new Date().getTime();
   if (timeNow - lastFartTime < 500) return;
   lastFartTime = timeNow;
@@ -30,9 +33,12 @@ const fart = () => {
   let filePath = `/home/pi/rvr/farts/fart-0${randomFart}.mp3`;
   console.log('file path', filePath);
   Omx(filePath);
+  const randomTime = Math.floor(Math.random() * 2000);
+  await asyncSleep(randomTime);
+  fart(n - 1);
 };
 
-setInterval(fart, 100);
+setInterval(fart, 10000);
 
 socket.on('message', function(message, rinfo) {
   try {
