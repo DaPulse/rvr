@@ -63,8 +63,9 @@ socket.on('message', function(message, rinfo) {
   }
 });
 
-const getFilePath = folderPath => {
-  fs.readdirSync(folderPath).forEach(file => {
+const getFilePath = async folderPath => {
+  const files = await fs.readdir(folderPath);
+  for (let file of files) {
     try {
       console.log(file.split('.')[0]);
       console.log(MODULE_TYPE);
@@ -76,7 +77,8 @@ const getFilePath = folderPath => {
     } catch (err) {
       console.log(err);
     }
-  });
+  }
+  console.log('*************');
   return null;
 };
 
@@ -100,7 +102,7 @@ const startState = async state => {
   });
 
   const folderPath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/';
-  const filePath = getFilePath(folderPath);
+  const filePath = await getFilePath(folderPath);
   // filePath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/' + `${MODULE_TYPE}.${FILE_EXTENSION}`;
   // }
   if (filePath) {
