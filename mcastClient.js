@@ -1,3 +1,5 @@
+// Play in VLC: vlc --fullscreen --video-on-top --no-video-title-show <filename>
+
 const fs = require('fs');
 
 const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
