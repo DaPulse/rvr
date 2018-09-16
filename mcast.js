@@ -7,7 +7,7 @@ console.log('module name: ', global.MODULE_TYPE);
 
 // const MODULE_TYPE = process.env.RVR_MODULE || 'unkown_module';
 
-require('./s3');
+const { deleteOldFolders } = require('./s3');
 
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
@@ -54,9 +54,9 @@ getModeDirsSerialString = () => {
   return `1;${modeDirs.map(e => e.name).join(';')};\n`;
 };
 
-let lastSyncTime;
+let lastSyncTime = 0;
 try {
-  lastSyncTime = parseInt(fs.readFileSync('./last_sync_time'));
+  // lastSyncTime = parseInt(fs.readFileSync('./last_sync_time'));
 } catch (err) {
   // console.log(err);
   lastSyncTime = 0;
@@ -94,27 +94,17 @@ sync = async () => {
   readModeFolders();
 };
 
-sync();
-readModeFolders();
+const initializeMcast = () => {
+  deleteOldFolders();
+  sync();
+  readModeFolders();
+}
+
 
 module.exports = {
   socket,
   MULTICAST_ADDR,
   modeDirs,
-  getModeDirsSerialString
+  getModeDirsSerialString,
+  initializeMcast
 };
-
-// const sendMessage = async () => {
-//   // const message = Buffer.from(`Message from process ${process.pid}`);
-//   const msg = JSON.stringify({ channel: 0 });
-//   for (let i = 0; i < 5; i++) {
-//     await asyncSleep(2);
-//     socket.send(msg, 0, msg.length, PORT, MULTICAST_ADDR, function() {
-//       console.info(`Sending msg "${msg}"`);
-//     });
-//   }
-// };
-
-// // socket.on('message', function(message, rinfo) {
-// //   console.info(`Message from: ${rinfo.address}:${rinfo.port} - ${message}`);
-// // });

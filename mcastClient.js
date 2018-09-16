@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
+const MODULE_TYPE = process.env.RVR_MODULE || 'video-front';
 global.MODULE_TYPE = MODULE_TYPE;
 
 const { asyncSleep } = require('./utils');
@@ -10,7 +10,9 @@ const { asyncSleep } = require('./utils');
 const _ = require('underscore');
 var Omx = require('node-omxplayer');
 
-const { socket, modeDirs } = require('./mcast');
+const { socket, modeDirs, initializeMcast } = require('./mcast');
+
+initializeMcast();
 
 let players = {};
 

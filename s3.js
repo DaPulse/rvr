@@ -48,6 +48,8 @@ const getS3Files = async () => {
 const getDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
 
 const deleteOldFolders = async () => {
+  try {
+  console.log('delete old folders if not exist in S3')
   const usedFolders = await getS3Files();
   if (usedFolders.length < 2) return;
   const dirs = getDirs('./modes/');
@@ -59,12 +61,11 @@ const deleteOldFolders = async () => {
     }
   });
   console.log(usedFolders);
+} catch(err) {
+  console.log('error with deleting folders that does not exist in S3')
+}
 };
 
-try {
-  deleteOldFolders(0);
-} catch (err) {
-  console.log(err);
-}
-
-module.exports = {};
+module.exports = {
+  deleteOldFolders
+};
