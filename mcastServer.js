@@ -1,9 +1,14 @@
-const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
+// const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
+// global.MODULE_TYPE = MODULE_TYPE;
+
+const MODULE_TYPE = process.env.RVR_MODULE || 'server';
 global.MODULE_TYPE = MODULE_TYPE;
 
 const { asyncSleep } = require('./utils');
-const { socket, modeDirs, MULTICAST_ADDR, getModeDirsSerialString } = require('./mcast');
+const { socket, modeDirs, MULTICAST_ADDR, getModeDirsSerialString, initializeMcast } = require('./mcast');
 const { sendSerialMessage, initSerialListener } = require('./serial');
+
+initializeMcast();
 
 socket.bind(socket.port);
 
