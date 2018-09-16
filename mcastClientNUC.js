@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+// comment 2
+
 const MODULE_TYPE = process.env.RVR_MODULE || 'video-front';
 global.MODULE_TYPE = MODULE_TYPE;
 
