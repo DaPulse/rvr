@@ -42,6 +42,7 @@ const initSerialListener = callback => {
 
     // Switches the port into "flowing mode"
     serialPort.on('data', function(data) {
+      console.log('data: ', data.toString('utf8'))
       try {
         msg = msg + data.toString('utf8');
         if (data.includes('\n')) {
