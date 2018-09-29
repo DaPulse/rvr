@@ -54,6 +54,7 @@ const initSerialListener = callback => {
           callback(data);
         }
       } catch (err) {
+        msg = '';
         console.log('a', data.toString('utf8'));
         console.log('b', err);
       }
