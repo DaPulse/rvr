@@ -43,9 +43,11 @@ const initSerialListener = callback => {
     // Switches the port into "flowing mode"
     serialPort.on('data', function(data) {
       console.log('data: ', data.toString('utf8'))
+      console.log('msg: ', msg)
       try {
         msg = msg + data.toString('utf8');
         if (data.includes('\n')) {
+          console.log('msg to parse: ', msg)
           let data = JSON.parse(msg.slice(0, -2));
           msg = '';
 
