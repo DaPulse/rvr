@@ -34,7 +34,11 @@ initSerialListener(data => {
   }
 
   if (data.action && data.action == 'get_modes') {
-    setTimeout(() => sendSerialMessage(getModeDirsSerialString()), 1000);
+    setTimeout(() => { 
+      const modes = getModeDirsSerialString()
+      console.log('modes: ', modes)
+      sendSerialMessage(modes)
+    }), 1000);
     console.log('Getting modes');
   }
 
