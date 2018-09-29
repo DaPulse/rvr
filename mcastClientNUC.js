@@ -1,21 +1,40 @@
-// Play in VLC: vlc --fullscreen --video-on-top --no-video-title-show <filename>
-
 const fs = require('fs');
+
+// comment 2
 
 const MODULE_TYPE = process.env.RVR_MODULE || 'video-front';
 global.MODULE_TYPE = MODULE_TYPE;
 
+const { asyncSleep } = require('./utils');
+
 const _ = require('underscore');
-var Omx = require('node-omxplayer');
+const MPlayer = require('mplayer');
 
-const { socket, modeDirs, initializeMcast } = require('./mcast');
-const { fart } = require('./fart')
+var player = new MPlayer();
+player.setOptions({ fullscreen: true, loop: 1000 });
 
-initializeMcast();
+const { socket, modeDirs } = require('./mcast');
 
 let players = {};
 
 let currentState = {};
+
+let lastFartTime = new Date().getTime();
+
+const fart = async (n = 2) => {
+  if (n == 0) return;
+  const timeNow = new Date().getTime();
+  if (timeNow - lastFartTime < 500) return;
+  lastFartTime = timeNow;
+  console.log('Farting');
+  const randomFart = Math.ceil(Math.random() * 8);
+  let filePath = `~/rvr/farts/fart-0${randomFart}.mp3`;
+  console.log('file path', filePath);
+  Omx(filePath);
+  const randomTime = Math.floor(Math.random() * 2000);
+  await asyncSleep(randomTime);
+  fart(n - 1);
+};
 
 socket.on('message', function(message, rinfo) {
   try {
@@ -24,7 +43,7 @@ socket.on('message', function(message, rinfo) {
     // console.log(msgJson);
 
     if (msgJson.fart) {
-      fart(Omx);
+      fart();
     }
 
     if (!_.isEqual(currentState, msgJson) && modeDirs.length > 0) {
@@ -65,12 +84,12 @@ const startState = async state => {
   });
 
   // const folderPath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/';
-  const folderPath = '/home/pi/rvr/modes/' + currentState.path + '/';
+  const folderPath = '/home/monday/rvr/modes/' + currentState.path + '/';
   const filePath = await getFilePath(folderPath);
 
   if (filePath) {
     console.log('file path', filePath);
-    players[state.mode] = Omx(filePath);
+    players[state.mode] = player.openFile(filePath); //Omx(filePath);
   } else {
     console.log('file was not found for module');
   }

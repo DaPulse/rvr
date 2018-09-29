@@ -1,15 +1,29 @@
-const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
+// const MODULE_TYPE = process.env.RVR_MODULE || 'undefined_module';
+// global.MODULE_TYPE = MODULE_TYPE;
+
+const MODULE_TYPE = process.env.RVR_MODULE || 'server';
 global.MODULE_TYPE = MODULE_TYPE;
 
 const { asyncSleep } = require('./utils');
-const { socket, MULTICAST_ADDR, getModeDirsSerialString } = require('./mcast');
+const { socket, modeDirs, MULTICAST_ADDR, getModeDirsSerialString, initializeMcast } = require('./mcast');
 const { sendSerialMessage, initSerialListener } = require('./serial');
+
+initializeMcast();
 
 socket.bind(socket.port);
 
 let lastSentTime = new Date().getTime();
 
 let currentMode = 1;
+
+// setInterval(() => {
+//   if (currentMode == 2) {
+//     currentMode = 1;
+//   } else {
+//     currentMode = 2;
+//   }
+// }, 2000);
+
 initSerialListener(data => {
   console.log('Received message: ', data);
   if (data.action && data.action == 'play') {
@@ -20,7 +34,11 @@ initSerialListener(data => {
   }
 
   if (data.action && data.action == 'get_modes') {
-    setTimeout(() => sendSerialMessage(getModeDirsSerialString()), 1000);
+    setTimeout(() => { 
+      const modes = getModeDirsSerialString()
+      console.log('modes: ', modes)
+      sendSerialMessage(modes)
+    }, 1000);
     console.log('Getting modes');
   }
 
@@ -39,7 +57,8 @@ const sendMessage = async message => {
   if (message) {
     msg = message;
   } else {
-    msg = JSON.stringify({ mode: currentMode });
+    const path = (modeDirs[currentMode] || {}).path;
+    msg = JSON.stringify({ mode: currentMode, path });
   }
 
   for (let i = 0; i < 1; i++) {
