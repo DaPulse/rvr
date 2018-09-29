@@ -38,7 +38,7 @@ initSerialListener(data => {
       const modes = getModeDirsSerialString()
       console.log('modes: ', modes)
       sendSerialMessage(modes)
-    }), 1000);
+    }, 1000);
     console.log('Getting modes');
   }
 
