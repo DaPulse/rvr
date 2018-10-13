@@ -1,8 +1,5 @@
-/*
-14CORE LCD 16x2 Display Driving Example
-*/
 #include <Wire.h> // Include Wire.h to control I2C
-#include <LiquidCrystal_I2C.h> //Download & include the code library can be downloaded below
+#include <LiquidCrystal_I2C.h>
 #include <IRremote.h>
 
 int mode = 0;

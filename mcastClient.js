@@ -1,12 +1,13 @@
 // Play in VLC: vlc --fullscreen --video-on-top --no-video-title-show <filename>
 
 const fs = require('fs');
+const { spawn } = require('child_process');
+let vlcProcess = null;
 
 const MODULE_TYPE = process.env.RVR_MODULE || 'video-front';
 global.MODULE_TYPE = MODULE_TYPE;
 
 const _ = require('underscore');
-var Omx = require('node-omxplayer');
 
 const { socket, modeDirs, initializeMcast } = require('./mcast');
 const { fart } = require('./fart')
@@ -56,24 +57,38 @@ const getFilePath = async folderPath => {
 
 const startState = async state => {
   console.log('startState');
-  Object.keys(players).forEach(function(modeId) {
-    const player = players[modeId];
-    if (player && player.running) {
-      // console.log('player modeId ' + modeId + ' was running, quit player');
-      player.quit();
-    }
-  });
+
+  // Object.keys(players).forEach(function(modeId) {
+  //   const player = players[modeId];
+  //   if (player && player.running) {
+      console.log('player modeId ' + modeId + ' was running, quit player');
+      // player.quit();
+    // }
+  // });
 
   // const folderPath = '/home/pi/rvr/modes/' + modeDirs[state.mode].path + '/';
-  const folderPath = '/home/pi/rvr/modes/' + currentState.path + '/';
+  const folderPath = '/home/monday/rvr/modes/' + currentState.path + '/';
   const filePath = await getFilePath(folderPath);
 
   if (filePath) {
     console.log('file path', filePath);
-    players[state.mode] = Omx(filePath);
+    playVideoFile(filePath);
+    // players[state.mode] = Omx(filePath);
   } else {
     console.log('file was not found for module');
   }
+};
+
+const playVideoFile = file => {
+  if(vlcProcess) {
+    // Something else is playing
+    vlcProcess.kill();
+    while(!vlcProcess.killed) {}
+
+    vlcProcess = null;
+  }
+
+  vlcProcess = spawn('/usr/bin/vlc', ['--fullscreen' ,'--video-on-top', '--no-video-title-show', file]);
 };
 
 socket.bind(socket.port);
