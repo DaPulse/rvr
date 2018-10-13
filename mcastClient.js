@@ -61,7 +61,7 @@ const startState = async state => {
   // Object.keys(players).forEach(function(modeId) {
   //   const player = players[modeId];
   //   if (player && player.running) {
-      console.log('player modeId ' + modeId + ' was running, quit player');
+  //     console.log('player modeId ' + modeId + ' was running, quit player');
       // player.quit();
     // }
   // });
