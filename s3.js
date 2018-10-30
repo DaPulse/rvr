@@ -44,7 +44,7 @@ const syncS3 = async () => {
   }
   try {
     let output = await exec(
-      `cd modes && aws s3 sync s3://monday-rvr ./ --exclude "*" --include "*${
+      `cd modes && /home/monday/.local/bin/aws s3 sync s3://monday-rvr ./ --exclude "*" --include "*${
         global.MODULE_TYPE
       }*" --include "*.mp3" ${true ? '' : '--delete'}`
     );

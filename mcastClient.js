@@ -80,6 +80,7 @@ const startState = async state => {
 };
 
 const playVideoFile = file => {
+  console.log('playVideoFile')
   if(vlcProcess) {
     // Something else is playing
     vlcProcess.kill();
@@ -87,6 +88,8 @@ const playVideoFile = file => {
 
     vlcProcess = null;
   }
+
+  console.log('file to play: ', file)
 
   vlcProcess = spawn('/usr/bin/vlc', ['--fullscreen' ,'--video-on-top', '--no-video-title-show', '--qt-continue=0', '--play-and-exit', file]);
   vlcProcess.on('exit', () => vlcProcess = null);
