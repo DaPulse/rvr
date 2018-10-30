@@ -81,18 +81,28 @@ const startState = async state => {
 
 const playVideoFile = file => {
   console.log('playVideoFile')
-  if(vlcProcess) {
-    // Something else is playing
-    vlcProcess.kill();
-    while(!vlcProcess.killed) {}
+  // if(vlcProcess) {
+  //   // Something else is playing
+  //   vlcProcess.kill();
+  //   while(!vlcProcess.killed) {}
 
-    vlcProcess = null;
-  }
+  //   vlcProcess = null;
+  // }
 
-  console.log('file to play: ', file)
+  // let killer = spawn('/usr/bin/pkill vlc', {shell: true});
+  // killer.on('exit', () => {
+  //   console.log('killed all vlc players')
+  // })
 
-  vlcProcess = spawn('/usr/bin/vlc', ['--fullscreen' ,'--video-on-top', '--no-video-title-show', '--qt-continue=0', '--play-and-exit', file]);
-  vlcProcess.on('exit', () => vlcProcess = null);
+
+  // console.log('file to play: ', file)
+  // vlcProcess = spawn('/usr/bin/vlc', ['--fullscreen' ,'--video-on-top', '--no-video-title-show', '--qt-continue=0', '--play-and-exit', file]);
+
+  vlcProcess = spawn(`/usr/bin/pkill vlc ; /usr/bin/vlc --fullscreen --video-on-top --no-video-title-show --qt-continue=0 --play-and-exit ${file}`, {shell: true});
+
+  vlcProcess.on('exit', () => {
+    vlcProcess = null; console.log('started new vlc process'); 
+  });
   vlcProcess.on('close', () => vlcProcess = null);
 };
 
