@@ -29,14 +29,20 @@ const readModeFolders = () => {
   console.log('get s3 dir names into modes');
   const getDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
   const dirs = getDirs('./modes/');
+  let index = 0;
+  let dirViewName;
   dirs.forEach(dir => {
-    const dirNum = parseInt(dir.split('--')[0]);
-    const dirName = dir.split('--')[1];
-    modeDirs[dirNum] = {
-      mode: dirNum,
-      path: dir,
-      name: dirName
-    };
+    if (String(dir).includes('--')) {
+      dirViewName = dir.split('--')[1];
+    } else {
+      dirViewName = dir
+    }
+    modeDirs[index] = {
+        mode: index,
+        path: dir,
+        name: dirViewName
+      };
+    index++;
   });
   console.log('module dirs:');
   console.log(dirs);
