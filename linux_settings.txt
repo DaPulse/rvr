@@ -1,0 +1,9 @@
+# cron settings for client viewer
+# will check if process exist in process list
+# if not start a new viewer process
+* * * * * if ps aux | grep -v grep | grep mcastClient > /dev/null; then echo 1; else cd /home/monday/rvr && DISPLAY=:0.0 node mcastClient.js > /home/monday/rvlog.txt; fi; 2>&1
+
+# /etc/rc.local
+cd /home/monday/rvr && node mcastServer.js & echo "start mcast server"
+# cd /home/monday/rvr && sudo -u monday node mcastClient.js > /home/monday/rvrlog.txt & echo "start mcast client"
+exit 0

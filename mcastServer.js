@@ -14,7 +14,8 @@ socket.bind(socket.port);
 
 let lastSentTime = new Date().getTime();
 
-let currentMode = 1;
+// default mode
+let currentMode = 5;
 
 // setInterval(() => {
 //   if (currentMode == 2) {
