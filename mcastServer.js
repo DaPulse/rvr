@@ -70,4 +70,12 @@ const sendMessage = async message => {
   }
 };
 
-setInterval(sendMessage, 1000);
+// setInterval(sendMessage, 1000);
+
+// test fart
+// setInterval(() => {
+//   sendMessage(JSON.stringify({ fart: true }))
+// },
+//   5000
+// )
+

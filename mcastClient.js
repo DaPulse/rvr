@@ -10,7 +10,7 @@ global.MODULE_TYPE = MODULE_TYPE;
 const _ = require('underscore');
 
 const { socket, modeDirs, initializeMcast } = require('./mcast');
-const { fart } = require('./fart')
+const { getFartFile } = require('./fart')
 
 initializeMcast();
 
@@ -18,14 +18,18 @@ let players = {};
 
 let currentState = {};
 
+let lastFartTime = 0;
+
 socket.on('message', function(message, rinfo) {
   try {
     const msgJson = JSON.parse(message);
-    // console.log('received a message:');
-    // console.log(msgJson);
+    console.log('received a message:');
+    console.log(msgJson);
 
     if (msgJson.fart) {
-      fart(Omx);
+      const file = getFartFile();
+      console.log(file)
+      playVideoFile(file)
     }
 
     if (!_.isEqual(currentState, msgJson) && modeDirs.length > 0) {
@@ -98,7 +102,7 @@ const playVideoFile = file => {
   // console.log('file to play: ', file)
   // vlcProcess = spawn('/usr/bin/vlc', ['--fullscreen' ,'--video-on-top', '--no-video-title-show', '--qt-continue=0', '--play-and-exit', file]);
 
-  vlcProcess = spawn(`/usr/bin/pkill vlc ; /usr/bin/vlc --fullscreen --video-on-top --no-video-title-show --qt-continue=0 --play-and-exit ${file}`, {shell: true});
+  vlcProcess = spawn(`/usr/bin/pkill -9 vlc ; /usr/bin/vlc --fullscreen --video-on-top --no-video-title-show --qt-continue=0 --play-and-exit ${file}`, {shell: true});
 
   vlcProcess.on('exit', () => {
     vlcProcess = null; console.log('started new vlc process'); 
